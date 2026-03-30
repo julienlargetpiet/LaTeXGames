@@ -54,6 +54,10 @@ reset_game() {
   spawn_wave
 }
 
+build_fmt() {
+  pdflatex -interaction=nonstopmode -ini -jobname=main "&pdflatex" mylatexformat.ltx """main.tex""" > /dev/null < /dev/null
+}
+
 move_cacti() {
   if [ "$num_cactus" -gt 0 ]; then
     cactus1x=$((cactus1x - 1))
@@ -115,11 +119,12 @@ EOF
 }
 
 render_frame() {
-  pdflatex -interaction=nonstopmode main.tex > /dev/null < /dev/null
+  pdflatex -fmt=main.fmt -interaction=nonstopmode main.tex > /dev/null < /dev/null
 }
 
 # --- START GAME ---
 reset_game
+build_fmt
 
 while true; do
   key=""
