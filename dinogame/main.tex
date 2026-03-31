@@ -1,59 +1,32 @@
-\documentclass{article}
-\usepackage{tikz}
-
-\begin{document}
 \input{state.tex}
-\begin{center}
-\begin{tikzpicture}[scale=0.5]
-    \begin{scope}[shift={(2,5)}] % position (top-left)
-        % outer circle
-        \draw[thick](0,0)circle(1);
-        % center dot
-        \fill(0,0)circle(0.05);
-        % clock hand (rotates with time)
-        \draw[thick](0,0)--(-\time*3.6:0.8);
-    \end{scope}
-    % ground
-    \draw[thick](0,0)--(30,0);
-    % dino
-    \fill[black](1,\dinoy)rectangle++(1,1);
-    % cactus 1
-    \ifnum\cactusax>-1
-      \fill[green]
-      (\cactusax,0)rectangle++(0.5,1.5)
-      \ifnum\cactusbx>-1
-        % cactus 2
-        (\cactusbx,0)rectangle++(0.5,1.5)
-        \ifnum\numcactus>2
-          % cactus 3
-          (\cactuscx,0)rectangle++(0.5,1.5)
-        \fi
-      \fi
-      ;
-    \else
-      % cactus 2
-      \ifnum\cactusbx>-1
-        \fill[green]
-        (\cactusbx,0)rectangle++(0.5,1.5)
-        \ifnum\numcactus>2
-          % cactus 3
-          (\cactuscx,0)rectangle++(0.5,1.5)
-        \fi
-        ;
-      \else
-        % cactus 3
-        \ifnum\numcactus>2
-          \fill[green](\cactuscx,0)rectangle++(0.5,1.5);
-        \fi
-      \fi
-    \fi
-    \node[anchor=west]at(10,4){\Large Score: \score};
-    % game over
-    \if1\gameover
-      \node[red,scale=2]at(7,3){GAME OVER};
-    \else
-      \node[scale=2]at(7,17){Dinos In LaTeX};
-    \fi
-\end{tikzpicture}
-\end{center}
-\end{document}
+
+\newdimen\unit\unit=5mm
+
+\def\rule#1#2{\vrule width#1\unit height#2\unit\relax}
+\def\green#1{\pdfliteral{0 1 0 rg 0 1 0 RG}#1\pdfliteral{0 g 0 G}}
+\def\red#1{\pdfliteral{1 0 0 rg 1 0 0 RG}#1\pdfliteral{0 g 0 G}}
+\def\cactus#1{\ifnum#1>-1 \rlap{\hskip#1\unit\green{\rule{0.5}{1.5}}}\fi}
+
+% no one needs a clock (or: drawing it in plain without Ti*k*Z, pstricks, etc.
+% is beyond my capability)
+
+\centerline{\if1\gameover\red{GAME OVER}\else Dinos in Plain\fi}
+
+\noindent
+Score: \score
+
+\vskip1\unit
+
+\noindent
+% dino
+\smash{\raise\dinoy\unit\rlap{\hskip\unit\rule11}}%
+% cactus 1
+\cactus\cactusax
+% cactus 2
+\cactus\cactusbx
+% cactus 3
+\cactus\cactuscx
+
+\hrule % ground
+
+\bye
