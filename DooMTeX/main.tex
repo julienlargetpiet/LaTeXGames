@@ -130,6 +130,22 @@
     \node[red!70!black, scale=3] at ({\W/2}, {\H/2 + 1}) {SCORE: \score};
     \fi
 
+    \ifnum\turndir=1
+        \fill[white]
+            ({\W/2 - 2}, {\H/2})
+            -- ({\W/2}, {\H/2 + 1})
+            -- ({\W/2}, {\H/2 - 1})
+            -- cycle;
+    \fi
+    
+    \ifnum\turndir=2
+        \fill[white]
+            ({\W/2 + 2}, {\H/2})
+            -- ({\W/2}, {\H/2 + 1})
+            -- ({\W/2}, {\H/2 - 1})
+            -- cycle;
+    \fi
+
 \end{tikzpicture}
 \end{center}
 

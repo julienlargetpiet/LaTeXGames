@@ -40,6 +40,7 @@ reset_game() {
   shoot=0
   demon=0
   gameover=0
+  turndir=0
   lst="0,1,2"
   score=0
   update_scale
@@ -55,6 +56,7 @@ cat > state.tex <<EOF
 \def\demon{$demon}
 \def\gameover{$gameover}
 \def\score{$score}
+\def\turndir{$turndir}
 EOF
 }
 
@@ -78,6 +80,8 @@ while true; do
 
   # reset shoot each frame
   shoot=0
+
+  turndir=0
 
   case "$key" in
     k) # forward
@@ -117,6 +121,11 @@ while true; do
           gameover=1
         else
           echo "TURN RIGHT"
+          turndir=2
+          write_state
+          render
+          turndir=0
+          sleep 0.3
           step=0
         fi
       fi
@@ -130,6 +139,11 @@ while true; do
           gameover=1
         else
           echo "TURN LEFT"
+          turndir=1
+          write_state
+          render
+          turndir=0
+          sleep 0.5
           step=0
         fi
       fi
