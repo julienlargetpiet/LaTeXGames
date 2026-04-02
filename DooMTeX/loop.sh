@@ -65,8 +65,14 @@ render() {
 
 # --- INIT ---
 reset_game
+update_scale
+write_state
+render
 
 while true; do
+
+  update=0
+
   key=""
   read -u 3 -rsn1 -t 0.1 key
 
@@ -85,6 +91,7 @@ while true; do
           fi
         fi
       fi
+      update=1
       ;;
     j) # backward
       if [ "$gameover" -eq 0 ]; then
@@ -100,6 +107,7 @@ while true; do
           echo "BACK -> step=$step"
         fi
       fi
+      update=1
       ;;
     l) # right turn
       if [ "$step" -eq 2 ] && [ "$gameover" -eq 0 ]; then
@@ -112,6 +120,7 @@ while true; do
           step=0
         fi
       fi
+      update=1
       ;;
     h) # left turn
       if [ "$step" -eq 2 ] && [ "$gameover" -eq 0 ]; then
@@ -124,6 +133,7 @@ while true; do
           step=0
         fi
       fi
+      update=1
       ;;
     s) # shoot
       if [ "$step" -eq 2 ] && [ "$demon" -eq 1 ]; then
@@ -132,10 +142,12 @@ while true; do
         shoot=1
         score=$((score+1))
       fi
+      update=1
       ;;
     r)
       echo "RESET"
       reset_game
+      update=1
       ;;
     q)
       echo "QUIT"
@@ -153,11 +165,13 @@ while true; do
     lst="0"
   fi
 
-  update_scale
+  if [[ "$update" -eq 1 ]]; then
+    update_scale
+    write_state
+    render
+    sleep 0.1
+  fi
 
-  write_state
-  render
-  sleep 0.1
 done
 
 
