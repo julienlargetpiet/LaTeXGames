@@ -1,73 +1,32 @@
-\documentclass{article}
-\usepackage{tikz}
-\usepackage{pgfplots}
- 
-\pgfplotsset{compat=1.18}
-
-\begin{document}
-
 \input{state.tex}
 
-\begin{center}
+\newdimen\unit\unit=5mm
 
-\begin{tikzpicture}[scale=0.5]
+\def\rule#1#2{\vrule width#1\unit height#2\unit\relax}
+\def\green#1{\pdfliteral{0 1 0 rg 0 1 0 RG}#1\pdfliteral{0 g 0 G}}
+\def\red#1{\pdfliteral{1 0 0 rg 1 0 0 RG}#1\pdfliteral{0 g 0 G}}
+\def\cactus#1{\ifnum#1>-1 \rlap{\hskip#1\unit\green{\rule{0.5}{1.5}}}\fi}
 
-    \pgfmathsetmacro{\angle}{\time * 3.6}
-    \begin{scope}[shift={(2,5)}] % position (top-left)
-    
-        % outer circle
-        \draw[thick] (0,0) circle (1);
-    
-        % center dot
-        \fill (0,0) circle (0.05);
-    
-        % clock hand (rotates with time)
-        \pgfmathsetmacro{\angle}{\time * 3.6}
-        \draw[thick] (0,0) -- ({0.8*cos(\angle)}, {0.8*sin(\angle)});
-    
-    \end{scope}
+% no one needs a clock (or: drawing it in plain without Ti*k*Z, pstricks, etc.
+% is beyond my capability)
 
-    % ground
-    \draw[thick] (0,0) -- (30,0);
-    
-    % dino
-    \fill[black] (1,\dinoy) rectangle ++(1,1);
-    
-    %% cactus
-    %\fill[green] (\cactusx,0) rectangle ++(0.5,1.5);
+\centerline{\if1\gameover\red{GAME OVER}\else Dinos in Plain\fi}
 
-    % cactus 1
-    \ifnum\numcactus>0
-      \ifnum\cactusax>0
-      \fill[green] (\cactusax,0) rectangle ++(0.5,1.5);
-      \fi
-    \fi
-    
-    % cactus 2
-    \ifnum\numcactus>1
-      \ifnum\cactusbx>0
-      \fill[green] (\cactusbx,0) rectangle ++(0.5,1.5);
-      \fi
-    \fi
-    
-    % cactus 3
-    \ifnum\numcactus>2
-      \fill[green] (\cactuscx,0) rectangle ++(0.5,1.5);
-    \fi
+\noindent
+Score: \score
 
-    \node[anchor=west] at (10,4) {\Large Score: \score};
+\vskip1\unit
 
-    % game over
-    \ifnum\gameover=1
-        \node[red, scale=2] at (7,3) {GAME OVER};
-    \else 
-        \node[black, scale=2] at (7,17) {Dinos In LaTeX};
-    \fi
+\noindent
+% dino
+\smash{\raise\dinoy\unit\rlap{\hskip\unit\rule11}}%
+% cactus 1
+\cactus\cactusax
+% cactus 2
+\cactus\cactusbx
+% cactus 3
+\cactus\cactuscx
 
-\end{tikzpicture}
+\hrule % ground
 
-\end{center}
-
-\end{document}
-
-
+\bye

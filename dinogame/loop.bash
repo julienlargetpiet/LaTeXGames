@@ -115,7 +115,7 @@ EOF
 }
 
 render_frame() {
-  pdflatex -interaction=nonstopmode main.tex > /dev/null < /dev/null
+  pdftex -interaction=nonstopmode main.tex > /dev/null < /dev/null
 }
 
 # --- START GAME ---
