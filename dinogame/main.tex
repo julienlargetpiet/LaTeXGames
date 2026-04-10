@@ -1,73 +1,59 @@
 \documentclass{article}
 \usepackage{tikz}
-\usepackage{pgfplots}
- 
-\pgfplotsset{compat=1.18}
 
 \begin{document}
-
 \input{state.tex}
-
 \begin{center}
-
 \begin{tikzpicture}[scale=0.5]
-
-    \pgfmathsetmacro{\angle}{\time * 3.6}
     \begin{scope}[shift={(2,5)}] % position (top-left)
-    
         % outer circle
-        \draw[thick] (0,0) circle (1);
-    
+        \draw[thick](0,0)circle(1);
         % center dot
-        \fill (0,0) circle (0.05);
-    
+        \fill(0,0)circle(0.05);
         % clock hand (rotates with time)
-        \pgfmathsetmacro{\angle}{\time * 3.6}
-        \draw[thick] (0,0) -- ({0.8*cos(\angle)}, {0.8*sin(\angle)});
-    
+        \draw[thick](0,0)--(-\time*3.6:0.8);
     \end{scope}
-
     % ground
-    \draw[thick] (0,0) -- (30,0);
-    
+    \draw[thick](0,0)--(30,0);
     % dino
-    \fill[black] (1,\dinoy) rectangle ++(1,1);
-    
-    %% cactus
-    %\fill[green] (\cactusx,0) rectangle ++(0.5,1.5);
-
+    \fill[black](1,\dinoy)rectangle++(1,1);
     % cactus 1
-    \ifnum\numcactus>0
-      \ifnum\cactusax>0
-      \fill[green] (\cactusax,0) rectangle ++(0.5,1.5);
+    \ifnum\cactusax>-1
+      \fill[green]
+      (\cactusax,0)rectangle++(0.5,1.5)
+      \ifnum\cactusbx>-1
+        % cactus 2
+        (\cactusbx,0)rectangle++(0.5,1.5)
+        \ifnum\numcactus>2
+          % cactus 3
+          (\cactuscx,0)rectangle++(0.5,1.5)
+        \fi
+      \fi
+      ;
+    \else
+      % cactus 2
+      \ifnum\cactusbx>-1
+        \fill[green]
+        (\cactusbx,0)rectangle++(0.5,1.5)
+        \ifnum\numcactus>2
+          % cactus 3
+          (\cactuscx,0)rectangle++(0.5,1.5)
+        \fi
+        ;
+      \else
+        % cactus 3
+        \ifnum\numcactus>2
+          \fill[green](\cactuscx,0)rectangle++(0.5,1.5);
+        \fi
       \fi
     \fi
-    
-    % cactus 2
-    \ifnum\numcactus>1
-      \ifnum\cactusbx>0
-      \fill[green] (\cactusbx,0) rectangle ++(0.5,1.5);
-      \fi
-    \fi
-    
-    % cactus 3
-    \ifnum\numcactus>2
-      \fill[green] (\cactuscx,0) rectangle ++(0.5,1.5);
-    \fi
-
-    \node[anchor=west] at (10,4) {\Large Score: \score};
-
+    \node[anchor=west]at(10,4){\Large Score: \score};
     % game over
-    \ifnum\gameover=1
-        \node[red, scale=2] at (7,3) {GAME OVER};
-    \else 
-        \node[black, scale=2] at (7,17) {Dinos In LaTeX};
+    \if1\gameover
+      \node[red,scale=2]at(7,3){GAME OVER};
+    \else
+      \node[scale=2]at(7,17){Dinos In LaTeX};
     \fi
-
 \end{tikzpicture}
-
 \end{center}
-
 \end{document}
-
-
